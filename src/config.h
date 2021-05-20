@@ -2,7 +2,7 @@
 #define _CONFIG_H_
 #include <sched.h>
 
-#define PART 1
+#define PART 2
 
 // Hardware dependency parameter
 #define CORE_NUM 4

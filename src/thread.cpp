@@ -189,6 +189,11 @@ Thread::matrixMultiplication(void* args)
 #else
 
 	        /*~~~~~~~~~~~~Your code(PART2)~~~~~~~~~~~*/
+			int localSum = 0;
+			for (int k = 0 ; k < obj->matrixSize; k++)
+				localSum += obj->matrix [i][k] * obj->matrix [k][j];
+
+			obj->multiResult [i][j] = localSum;
 	        /*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 
 #endif
