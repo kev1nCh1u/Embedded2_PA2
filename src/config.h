@@ -2,7 +2,7 @@
 #define _CONFIG_H_
 #include <sched.h>
 
-#define PART 3
+#define PART 1
 
 // Hardware dependency parameter
 #define CORE_NUM 4
@@ -19,7 +19,7 @@
 #define MUTEX 0
 #define SPINLOCK 1
 
-#define PROTECT_SHARED_RESOURCE SPINLOCK
+#define PROTECT_SHARED_RESOURCE MUTEX
 
 
 // Synchronize method
