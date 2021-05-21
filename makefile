@@ -25,10 +25,10 @@ part3.out: clean 3 $(OBJ)
 	@if [ $@ == 3 ]; \
 	then \
 	    sed -i "/#define PROTECT_SHARED_RESOURCE/c\#define PROTECT_SHARED_RESOURCE SPINLOCK" ./src/config.h; \
-	    sed -i "/#define SYNCHRONIZE/c\#define SYNCHRONIZE BARRIER" ./src/config.h; \
+	    # sed -i "/#define SYNCHRONIZE/c\#define SYNCHRONIZE BARRIER" ./src/config.h; \
 	else \
 	    sed -i "/#define PROTECT_SHARED_RESOURCE/c\#define PROTECT_SHARED_RESOURCE MUTEX" ./src/config.h; \
-	    sed -i "/#define SYNCHRONIZE/c\#define SYNCHRONIZE BARRIER" ./src/config.h; \
+	    # sed -i "/#define SYNCHRONIZE/c\#define SYNCHRONIZE BARRIER" ./src/config.h; \
 	fi
 
 
