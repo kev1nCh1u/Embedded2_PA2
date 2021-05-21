@@ -10,13 +10,18 @@
 
 #include "config.h"
 
+#include <semaphore.h> // kevin
 
 class Thread
 {
 
   public:
 	void initialThread (int, int, int, int**, int**, int**, int**, int*);
-    void setUpIOMutex (pthread_mutex_t* tmp_mutex) {ioMutex = tmp_mutex;};
+    void setUpIOMutex (pthread_mutex_t* tmp_mutex) {ioMutex = tmp_mutex;}; // kevin
+    void setUpCountMutex (pthread_mutex_t* tmp_mutex) {count_mutex = tmp_mutex;}; // kevin
+    void setUpBarrier (pthread_barrier_t* tmp_barr) {barr = tmp_barr;}; // kevin
+    void setUpLock (pthread_spinlock_t* tmp_lock) {lock = tmp_lock;}; // kevin
+    void setUpSem (sem_t* tmp_sem) {sem = tmp_sem;}; // kevin
 
 	void setThreadCore (int);            // Set core thread pinned on
     void setStartCalculatePoint (int);   // Set start calculate point for mul
@@ -57,5 +62,9 @@ class Thread
     pthread_mutex_t* ioMutex;            // IO mutex
     int* sharedSum;                      // Shared resource
 
+    pthread_mutex_t* count_mutex; // kevin
+    pthread_barrier_t* barr; // kevin
+    pthread_spinlock_t* lock; // kevin
+    sem_t* sem; // kevin
 };
 #endif

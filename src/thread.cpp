@@ -99,6 +99,7 @@ Thread::synchronize ()
 {
 #if SYNCHRONIZE == BARRIER
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
+	pthread_barrier_wait (barr);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
@@ -113,6 +114,21 @@ Thread::enterCriticalSection ()
 {
 #if PROTECT_SHARED_RESOURCE == MUTEX
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
+	pthread_mutex_lock (count_mutex);
+	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
+#else
+	pthread_mutex_lock (ioMutex);
+    std::cout << "Synchronize method not supported." << std::endl;
+	pthread_mutex_unlock (ioMutex);
+#endif
+}
+
+void 
+Thread::exitCriticalSection ()
+{
+#if PROTECT_SHARED_RESOURCE == MUTEX
+	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
+	pthread_mutex_unlock (count_mutex);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
@@ -180,11 +196,15 @@ Thread::matrixMultiplication(void* args)
 
 #if (PART != 2)
 
+				obj->enterCriticalSection();
+
                 *obj->sharedSum = 0;
 	    		for (int k = 0 ; k < obj->matrixSize; k++)
 	    			*obj->sharedSum += obj->matrix [i][k] * obj->matrix [k][j];
 
                 obj->multiResult [i][j] = *obj->sharedSum;
+
+				obj->exitCriticalSection();
 
 #else
 
@@ -203,11 +223,11 @@ Thread::matrixMultiplication(void* args)
 
 	    } // for (int i...
 
-
+		obj->synchronize();
         // Copy the multiResult back to matrix
         for (int i = obj->startCalculatePoint; i < obj->endCalculatePoint; i++)
             memcpy (obj->matrix [i], obj->multiResult [i], obj->matrixSize * sizeof (int));
-
+		obj->synchronize();
 
     } // for (int num_multi...
 

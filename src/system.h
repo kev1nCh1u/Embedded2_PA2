@@ -12,6 +12,8 @@
 #include "config.h"
 #include "thread.h"
 
+#include <semaphore.h> // kevin
+
 typedef void* (*THREADFUNCPTR)(void*);
 
 
@@ -47,5 +49,9 @@ class System
     int* sharedSum;                // Shared resource
 
     static pthread_mutex_t ioMutex; // IO mutex
+    static pthread_mutex_t count_mutex; // kevin
+    static pthread_barrier_t barr; // kevin
+    static pthread_spinlock_t lock; // kevin
+    static sem_t sem; // kevin
 };
 #endif
