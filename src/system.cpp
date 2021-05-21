@@ -120,6 +120,8 @@ System::init ()
 
 	/*~~~~~~~~~Your code(PART1&PART3)~~~~~~~~*/
     pthread_barrier_init (&barr, NULL, THREAD_NUM); // kevin
+    pthread_spin_init (&lock, PTHREAD_PROCESS_PRIVATE); // kevin
+    // sem_init (&sem, pshared, value); // kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 }
 

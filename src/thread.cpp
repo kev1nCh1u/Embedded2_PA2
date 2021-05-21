@@ -116,6 +116,10 @@ Thread::enterCriticalSection ()
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
 	pthread_mutex_lock (count_mutex);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
+#elif PROTECT_SHARED_RESOURCE == SPINLOCK
+	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
+	pthread_spin_lock (lock);
+	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
     std::cout << "Synchronize method not supported." << std::endl;
@@ -129,6 +133,10 @@ Thread::exitCriticalSection ()
 #if PROTECT_SHARED_RESOURCE == MUTEX
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
 	pthread_mutex_unlock (count_mutex);
+	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/SPINLOCK
+#elif PROTECT_SHARED_RESOURCE == SPINLOCK
+	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
+	pthread_spin_unlock (lock);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
