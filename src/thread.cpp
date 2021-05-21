@@ -101,6 +101,10 @@ Thread::synchronize ()
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
 	pthread_barrier_wait (barr);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
+#elif SYNCHRONIZE == SEMAPHORE
+	/*~~~~~~~~~~~~Your code(PART+)~~~~~~~~~~~*/
+	pthread_barrier_wait (barr);
+	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
     std::cout << "Synchronize method not supported." << std::endl;
@@ -117,7 +121,7 @@ Thread::enterCriticalSection ()
 	pthread_mutex_lock (count_mutex);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #elif PROTECT_SHARED_RESOURCE == SPINLOCK
-	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
+	/*~~~~~~~~~~~~Your code(PART3)~~~~~~~~~~~*/
 	pthread_spin_lock (lock);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
@@ -135,7 +139,7 @@ Thread::exitCriticalSection ()
 	pthread_mutex_unlock (count_mutex);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #elif PROTECT_SHARED_RESOURCE == SPINLOCK
-	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
+	/*~~~~~~~~~~~~Your code(PART3)~~~~~~~~~~~*/
 	pthread_spin_unlock (lock);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
