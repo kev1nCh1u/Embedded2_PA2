@@ -133,7 +133,7 @@ Thread::exitCriticalSection ()
 #if PROTECT_SHARED_RESOURCE == MUTEX
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
 	pthread_mutex_unlock (count_mutex);
-	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/SPINLOCK
+	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #elif PROTECT_SHARED_RESOURCE == SPINLOCK
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
 	pthread_spin_unlock (lock);
