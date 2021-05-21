@@ -208,7 +208,7 @@ Thread::matrixMultiplication(void* args)
 
 #if (PART != 2)
 
-				obj->enterCriticalSection();
+				obj->enterCriticalSection(); //kevin
 
                 *obj->sharedSum = 0;
 	    		for (int k = 0 ; k < obj->matrixSize; k++)
@@ -216,7 +216,7 @@ Thread::matrixMultiplication(void* args)
 
                 obj->multiResult [i][j] = *obj->sharedSum;
 
-				obj->exitCriticalSection();
+				obj->exitCriticalSection(); //kevin
 
 #else
 
@@ -235,11 +235,13 @@ Thread::matrixMultiplication(void* args)
 
 	    } // for (int i...
 
-		obj->synchronize();
+		obj->synchronize(); //kevin
+
         // Copy the multiResult back to matrix
         for (int i = obj->startCalculatePoint; i < obj->endCalculatePoint; i++)
             memcpy (obj->matrix [i], obj->multiResult [i], obj->matrixSize * sizeof (int));
-		obj->synchronize();
+			
+		obj->synchronize(); //kevin
 
     } // for (int num_multi...
 
