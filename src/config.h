@@ -2,7 +2,7 @@
 #define _CONFIG_H_
 #include <sched.h>
 
-#define PART 1
+#define PART 3
 
 // Hardware dependency parameter
 #define CORE_NUM 4
@@ -10,7 +10,7 @@
 
 
 // Workload parameter
-#define PROGRAM_NUM 2
+#define PROGRAM_NUM 1
 #define MATRIX_SIZE 150
 #define MULTI_TIME 2
 
@@ -19,7 +19,7 @@
 #define MUTEX 0
 #define SPINLOCK 1
 
-#define PROTECT_SHARED_RESOURCE MUTEX
+#define PROTECT_SHARED_RESOURCE SPINLOCK
 
 
 // Synchronize method
