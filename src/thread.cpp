@@ -126,11 +126,11 @@ Thread::enterCriticalSection ()
 {
 #if PROTECT_SHARED_RESOURCE == MUTEX
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
-	pthread_mutex_lock (count_mutex);
+	pthread_mutex_lock (protectMutex);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #elif PROTECT_SHARED_RESOURCE == SPINLOCK
 	/*~~~~~~~~~~~~Your code(PART3)~~~~~~~~~~~*/
-	pthread_spin_lock (lock);
+	pthread_spin_lock (protectLock);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
@@ -144,11 +144,11 @@ Thread::exitCriticalSection ()
 {
 #if PROTECT_SHARED_RESOURCE == MUTEX
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
-	pthread_mutex_unlock (count_mutex);
+	pthread_mutex_unlock (protectMutex);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #elif PROTECT_SHARED_RESOURCE == SPINLOCK
 	/*~~~~~~~~~~~~Your code(PART3)~~~~~~~~~~~*/
-	pthread_spin_unlock (lock);
+	pthread_spin_unlock (protectLock);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);

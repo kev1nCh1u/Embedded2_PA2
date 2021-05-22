@@ -49,9 +49,9 @@ class System
     int* sharedSum;                // Shared resource
 
     static pthread_mutex_t ioMutex; // IO mutex
-    static pthread_mutex_t count_mutex; // kevin
+    static pthread_mutex_t protectMutex; // kevin
     static pthread_barrier_t syncBarr; // kevin
-    static pthread_spinlock_t lock; // kevin
+    static pthread_spinlock_t protectLock; // kevin
     static sem_t**** syncSem; // kevin part+
 };
 #endif

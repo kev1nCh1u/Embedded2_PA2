@@ -1,9 +1,9 @@
 #include "system.h"
 
 pthread_mutex_t System::ioMutex;
-pthread_mutex_t System::count_mutex; // kevin
+pthread_mutex_t System::protectMutex; // kevin
 pthread_barrier_t System::syncBarr; // kevin
-pthread_spinlock_t System::lock; // kevin
+pthread_spinlock_t System::protectLock; // kevin
 sem_t**** System::syncSem; // kevin part+
 
 /**
@@ -61,9 +61,9 @@ System::System ()
             threadSet [prog_index][thread_index].setEndCalculatePoint ((thread_index + 1) * MATRIX_SIZE / THREAD_NUM);
 
             threadSet [prog_index][thread_index].setUpIOMutex (&System::ioMutex);
-            threadSet [prog_index][thread_index].setUpCountMutex (&System::count_mutex); // kevin
+            threadSet [prog_index][thread_index].setUpCountMutex (&System::protectMutex); // kevin
             threadSet [prog_index][thread_index].setUpBarrier (&System::syncBarr); // kevin
-            threadSet [prog_index][thread_index].setUpLock (&System::lock); // kevin
+            threadSet [prog_index][thread_index].setUpLock (&System::protectLock); // kevin
             threadSet [prog_index][thread_index].setUpSem (System::syncSem); // kevin part+
 
         }
@@ -134,7 +134,7 @@ System::init ()
 
 	/*~~~~~~~~~Your code(PART1&PART3)~~~~~~~~*/
     pthread_barrier_init (&syncBarr, NULL, THREAD_NUM * PROGRAM_NUM); // kevin
-    pthread_spin_init (&lock, PTHREAD_PROCESS_PRIVATE); // kevin
+    pthread_spin_init (&protectLock, PTHREAD_PROCESS_PRIVATE); // kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
     /*~~~~~~~~~kevin code(PART+)~~~~~~~~*/
     for (int i = 0; i < PROGRAM_NUM; i++)
