@@ -11,7 +11,7 @@
 
 // Workload parameter
 #define PROGRAM_NUM 1
-#define MATRIX_SIZE 150
+#define MATRIX_SIZE 550
 #define MULTI_TIME 2
 
 
@@ -26,7 +26,7 @@
 #define BARRIER 0
 #define SEMAPHORE 1
 
-#define SYNCHRONIZE BARRIER
+#define SYNCHRONIZE BARRIER // kevin
 
 
 #endif
