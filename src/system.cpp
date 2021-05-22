@@ -2,9 +2,8 @@
 
 pthread_mutex_t System::ioMutex;
 pthread_mutex_t System::count_mutex; // kevin
-pthread_barrier_t System::barr; // kevin
+pthread_barrier_t System::syncBarr; // kevin
 pthread_spinlock_t System::lock; // kevin
-sem_t System::sem; // kevin
 
 /**
  * Set up the threadSet dependent on the inputfile.
@@ -48,9 +47,8 @@ System::System ()
 
             threadSet [prog_index][thread_index].setUpIOMutex (&System::ioMutex);
             threadSet [prog_index][thread_index].setUpCountMutex (&System::count_mutex); // kevin
-            threadSet [prog_index][thread_index].setUpBarrier (&System::barr); // kevin
+            threadSet [prog_index][thread_index].setUpBarrier (&System::syncBarr); // kevin
             threadSet [prog_index][thread_index].setUpLock (&System::lock); // kevin
-            threadSet [prog_index][thread_index].setUpSem (&System::sem); // kevin
 
         }
 
@@ -119,9 +117,8 @@ System::init ()
     sharedSum = new int [PROGRAM_NUM];
 
 	/*~~~~~~~~~Your code(PART1&PART3)~~~~~~~~*/
-    pthread_barrier_init (&barr, NULL, THREAD_NUM * PROGRAM_NUM); // kevin
+    pthread_barrier_init (&syncBarr, NULL, THREAD_NUM * PROGRAM_NUM); // kevin
     pthread_spin_init (&lock, PTHREAD_PROCESS_PRIVATE); // kevin
-    // sem_init (&sem, pshared, value); // kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 }
 

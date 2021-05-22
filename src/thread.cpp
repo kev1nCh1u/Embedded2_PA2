@@ -19,6 +19,8 @@ Thread::initialThread (int program_id, int id, int matrix_size, int** single_res
     inputMatrix = input_matrix;
 
     sharedSum = shared_sum;
+
+	sem_init (&syncSem, 0, 0); // kevin
 }
 
 
@@ -99,11 +101,11 @@ Thread::synchronize ()
 {
 #if SYNCHRONIZE == BARRIER
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
-	pthread_barrier_wait (barr);
+	pthread_barrier_wait (syncBarr);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #elif SYNCHRONIZE == SEMAPHORE
 	/*~~~~~~~~~~~~Your code(PART+)~~~~~~~~~~~*/
-	pthread_barrier_wait (barr);
+	sem_wait (&syncSem);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
