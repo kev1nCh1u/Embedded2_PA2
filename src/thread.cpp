@@ -100,15 +100,15 @@ Thread::synchronize ()
 {
 #if SYNCHRONIZE == BARRIER
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
-	pthread_barrier_wait (syncBarr);
+	pthread_barrier_wait (syncBarr); // barrier_wait by kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
-#elif SYNCHRONIZE == SEMAPHORE
+#elif SYNCHRONIZE == SEMAPHORE // SEMAPHORE by kevin
 	/*~~~~~~~~~~~~kevin code(PART+)~~~~~~~~~~~*/
-	for (int i = 0; i < PROGRAM_NUM; i++)
+	for (int i = 0; i < PROGRAM_NUM; i++) // post to every tasks flag
 		for (int j = 0; j < THREAD_NUM; j++)
 			if(i != programID || j != ID)
 				sem_post (&syncSem[i][j][programID][ID]);
-	for(int i = 0; i < PROGRAM_NUM; i++)
+	for(int i = 0; i < PROGRAM_NUM; i++) // check current task flag to wait
 		for (int j = 0; j < THREAD_NUM; j++)
 			if(i != programID || j != ID)
 				sem_wait (&syncSem[programID][ID][i][j]);
@@ -126,11 +126,11 @@ Thread::enterCriticalSection ()
 {
 #if PROTECT_SHARED_RESOURCE == MUTEX
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
-	pthread_mutex_lock (protectMutex);
+	pthread_mutex_lock (protectMutex); // mutex_lock by kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
-#elif PROTECT_SHARED_RESOURCE == SPINLOCK
+#elif PROTECT_SHARED_RESOURCE == SPINLOCK // SEMAPHORE by kevin
 	/*~~~~~~~~~~~~Your code(PART3)~~~~~~~~~~~*/
-	pthread_spin_lock (protectLock);
+	pthread_spin_lock (protectLock); // spin_lock by kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
@@ -140,15 +140,15 @@ Thread::enterCriticalSection ()
 }
 
 void 
-Thread::exitCriticalSection ()
+Thread::exitCriticalSection () // exitCriticalSection by kevin
 {
 #if PROTECT_SHARED_RESOURCE == MUTEX
 	/*~~~~~~~~~~~~Your code(PART1)~~~~~~~~~~~*/
-	pthread_mutex_unlock (protectMutex);
+	pthread_mutex_unlock (protectMutex); // mutex_unlock by kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
-#elif PROTECT_SHARED_RESOURCE == SPINLOCK
+#elif PROTECT_SHARED_RESOURCE == SPINLOCK // SEMAPHORE by kevin
 	/*~~~~~~~~~~~~Your code(PART3)~~~~~~~~~~~*/
-	pthread_spin_unlock (protectLock);
+	pthread_spin_unlock (protectLock); // spin_unlock by kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
@@ -216,7 +216,7 @@ Thread::matrixMultiplication(void* args)
 
 #if (PART != 2)
 
-				obj->enterCriticalSection(); //kevin
+				obj->enterCriticalSection(); // enterCriticalSection protect sharedSum by kevin
 
                 *obj->sharedSum = 0;
 	    		for (int k = 0 ; k < obj->matrixSize; k++)
@@ -224,12 +224,12 @@ Thread::matrixMultiplication(void* args)
 
                 obj->multiResult [i][j] = *obj->sharedSum;
 
-				obj->exitCriticalSection(); //kevin
+				obj->exitCriticalSection(); // exitCriticalSection protect sharedSum by kevin
 
 #else
 
 	        /*~~~~~~~~~~~~Your code(PART2)~~~~~~~~~~~*/
-			int localSum = 0;
+			int localSum = 0; // change sharedSum to localSum; non-reentrant to reentrant by kevin
 			for (int k = 0 ; k < obj->matrixSize; k++)
 				localSum += obj->matrix [i][k] * obj->matrix [k][j];
 
@@ -244,14 +244,14 @@ Thread::matrixMultiplication(void* args)
 	    } // for (int i...
 
 // std::cout << obj->ID << "test wait" << std::endl;
-		obj->synchronize(); //kevin
+		obj->synchronize(); // synchronize for matrix by kevin
 // std::cout << obj->ID << "test pass" << std::endl;
 
         // Copy the multiResult back to matrix
         for (int i = obj->startCalculatePoint; i < obj->endCalculatePoint; i++)
             memcpy (obj->matrix [i], obj->multiResult [i], obj->matrixSize * sizeof (int));
 			
-		obj->synchronize(); //kevin
+		obj->synchronize(); // synchronize for matrix by kevin
 
     } // for (int num_multi...
 

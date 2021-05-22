@@ -12,7 +12,7 @@
 #include "config.h"
 #include "thread.h"
 
-#include <semaphore.h> // kevin
+#include <semaphore.h> // include semaphore by kevin
 
 typedef void* (*THREADFUNCPTR)(void*);
 
@@ -49,9 +49,9 @@ class System
     int* sharedSum;                // Shared resource
 
     static pthread_mutex_t ioMutex; // IO mutex
-    static pthread_mutex_t protectMutex; // kevin
-    static pthread_barrier_t syncBarr; // kevin
-    static pthread_spinlock_t protectLock; // kevin
-    static sem_t**** syncSem; // kevin part+
+    static pthread_mutex_t protectMutex; // create protectMutex by kevin
+    static pthread_barrier_t syncBarr; // create pthread_barrier_t by kevin
+    static pthread_spinlock_t protectLock; // create pthread_spinlock_t by kevin
+    static sem_t**** syncSem; // create sem_t by kevin for part+
 };
 #endif

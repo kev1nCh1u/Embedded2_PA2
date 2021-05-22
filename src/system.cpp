@@ -1,10 +1,10 @@
 #include "system.h"
 
 pthread_mutex_t System::ioMutex;
-pthread_mutex_t System::protectMutex; // kevin
-pthread_barrier_t System::syncBarr; // kevin
-pthread_spinlock_t System::protectLock; // kevin
-sem_t**** System::syncSem; // kevin part+
+pthread_mutex_t System::protectMutex;     // include protectMutex by kevin
+pthread_barrier_t System::syncBarr;       // include syncBarr by kevin
+pthread_spinlock_t System::protectLock;   // include protectLock by kevin
+sem_t**** System::syncSem;                // include syncSem by kevin for part+
 
 /**
  * Set up the threadSet dependent on the inputfile.
@@ -12,16 +12,16 @@ sem_t**** System::syncSem; // kevin part+
  */
 System::System ()
 {
-    /*~~~~~~~~~kevin code(PART+)~~~~~~~~*/
-    System::syncSem  = new sem_t*** [PROGRAM_NUM];
+    /*~~~~~~~~~kevin code(PART+) create 4d Synchronize~~~~~~~~*/
+    System::syncSem  = new sem_t*** [PROGRAM_NUM]; // each flag for task to wait
     for (int i = 0; i < PROGRAM_NUM; i++)
     {
-        System::syncSem[i]  = new sem_t** [THREAD_NUM];
+        System::syncSem[i]  = new sem_t** [THREAD_NUM]; // each flag for task to wait
         for (int j = 0; j < THREAD_NUM; j++)
         {
-            System::syncSem[i][j]  = new sem_t* [PROGRAM_NUM];
+            System::syncSem[i][j]  = new sem_t* [PROGRAM_NUM]; // diff task state in flag
             for (int k = 0; k < PROGRAM_NUM; k++)
-                System::syncSem[i][j][k] = new sem_t [THREAD_NUM];
+                System::syncSem[i][j][k] = new sem_t [THREAD_NUM];  // diff task state in flag
         }
     }
     /*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
@@ -61,10 +61,10 @@ System::System ()
             threadSet [prog_index][thread_index].setEndCalculatePoint ((thread_index + 1) * MATRIX_SIZE / THREAD_NUM);
 
             threadSet [prog_index][thread_index].setUpIOMutex (&System::ioMutex);
-            threadSet [prog_index][thread_index].setUpCountMutex (&System::protectMutex); // kevin
-            threadSet [prog_index][thread_index].setUpBarrier (&System::syncBarr); // kevin
-            threadSet [prog_index][thread_index].setUpLock (&System::protectLock); // kevin
-            threadSet [prog_index][thread_index].setUpSem (System::syncSem); // kevin part+
+            threadSet [prog_index][thread_index].setUpCountMutex (&System::protectMutex); // setUpCountMutex by kevin
+            threadSet [prog_index][thread_index].setUpBarrier (&System::syncBarr); // setUpBarrier by kevin
+            threadSet [prog_index][thread_index].setUpLock (&System::protectLock); // setUpLock by kevin
+            threadSet [prog_index][thread_index].setUpSem (System::syncSem); // setUpSem by kevin for part+
 
         }
 
@@ -133,15 +133,15 @@ System::init ()
     sharedSum = new int [PROGRAM_NUM];
 
 	/*~~~~~~~~~Your code(PART1&PART3)~~~~~~~~*/
-    pthread_barrier_init (&syncBarr, NULL, THREAD_NUM * PROGRAM_NUM); // kevin
-    pthread_spin_init (&protectLock, PTHREAD_PROCESS_PRIVATE); // kevin
+    pthread_barrier_init (&System::syncBarr, NULL, THREAD_NUM * PROGRAM_NUM); // barrier_init by kevin
+    pthread_spin_init (&System::protectLock, PTHREAD_PROCESS_PRIVATE); // spin_init by kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
     /*~~~~~~~~~kevin code(PART+)~~~~~~~~*/
     for (int i = 0; i < PROGRAM_NUM; i++)
         for(int j = 0; j < THREAD_NUM; j++)
             for(int k = 0; k < PROGRAM_NUM; k++)
                 for(int x = 0; x < THREAD_NUM; x++)
-                    sem_init (&syncSem[i][j][k][x], 0, 0);
+                    sem_init (&System::syncSem[i][j][k][x], 0, 0);
     /*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 }
 
