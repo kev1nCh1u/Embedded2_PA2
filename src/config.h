@@ -26,7 +26,7 @@
 #define BARRIER 0
 #define SEMAPHORE 1
 
-#define SYNCHRONIZE BARRIER
+#define SYNCHRONIZE SEMAPHORE
 
 
 #endif

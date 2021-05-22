@@ -52,5 +52,6 @@ class System
     static pthread_mutex_t count_mutex; // kevin
     static pthread_barrier_t syncBarr; // kevin
     static pthread_spinlock_t lock; // kevin
+    static sem_t**** syncSem; // kevin part+
 };
 #endif

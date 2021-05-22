@@ -20,7 +20,6 @@ Thread::initialThread (int program_id, int id, int matrix_size, int** single_res
 
     sharedSum = shared_sum;
 
-	sem_init (&syncSem, 0, 0); // kevin
 }
 
 
@@ -104,8 +103,18 @@ Thread::synchronize ()
 	pthread_barrier_wait (syncBarr);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #elif SYNCHRONIZE == SEMAPHORE
-	/*~~~~~~~~~~~~Your code(PART+)~~~~~~~~~~~*/
-	sem_wait (&syncSem);
+	/*~~~~~~~~~~~~kevin code(PART+)~~~~~~~~~~~*/
+	// for(int i = 0; i < PROGRAM_NUM; i++)
+    //     for(int j = 0; j < THREAD_NUM; j++)
+	// 		// if(i != programID && j != ID)
+	// 			sem_wait (&syncSem[ID][i][j]);
+	
+	for (int i = 0; i < PROGRAM_NUM; i++)
+		for (int j = 0; j < THREAD_NUM; j++)
+			sem_post (&syncSem[i][j][programID][ID]);
+	for(int i = 0; i < PROGRAM_NUM; i++)
+		for (int j = 0; j < THREAD_NUM; j++)
+			sem_wait (&syncSem[programID][ID][i][j]);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);

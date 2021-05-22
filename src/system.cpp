@@ -4,6 +4,7 @@ pthread_mutex_t System::ioMutex;
 pthread_mutex_t System::count_mutex; // kevin
 pthread_barrier_t System::syncBarr; // kevin
 pthread_spinlock_t System::lock; // kevin
+sem_t**** System::syncSem; // kevin part+
 
 /**
  * Set up the threadSet dependent on the inputfile.
@@ -11,6 +12,20 @@ pthread_spinlock_t System::lock; // kevin
  */
 System::System ()
 {
+    /*~~~~~~~~~kevin code(PART+)~~~~~~~~*/
+    System::syncSem  = new sem_t*** [PROGRAM_NUM];
+    for (int i = 0; i < PROGRAM_NUM; i++)
+    {
+        System::syncSem[i]  = new sem_t** [THREAD_NUM];
+        for (int j = 0; j < THREAD_NUM; j++)
+        {
+            System::syncSem[i][j]  = new sem_t* [PROGRAM_NUM];
+            for (int k = 0; k < PROGRAM_NUM; k++)
+                System::syncSem[i][j][k] = new sem_t [THREAD_NUM];
+        }
+    }
+    /*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
+
     init ();
     setUpMatrix (); // Inital singleResult, multiResult, matrix, and inpoutMatrix
 
@@ -49,6 +64,7 @@ System::System ()
             threadSet [prog_index][thread_index].setUpCountMutex (&System::count_mutex); // kevin
             threadSet [prog_index][thread_index].setUpBarrier (&System::syncBarr); // kevin
             threadSet [prog_index][thread_index].setUpLock (&System::lock); // kevin
+            threadSet [prog_index][thread_index].setUpSem (System::syncSem); // kevin part+
 
         }
 
@@ -120,6 +136,13 @@ System::init ()
     pthread_barrier_init (&syncBarr, NULL, THREAD_NUM * PROGRAM_NUM); // kevin
     pthread_spin_init (&lock, PTHREAD_PROCESS_PRIVATE); // kevin
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
+    /*~~~~~~~~~kevin code(PART+)~~~~~~~~*/
+    for (int i = 0; i < PROGRAM_NUM; i++)
+        for(int j = 0; j < THREAD_NUM; j++)
+            for(int k = 0; k < PROGRAM_NUM; k++)
+                for(int x = 0; x < THREAD_NUM; x++)
+                    sem_init (&syncSem[i][j][k][x], 0, 0);
+    /*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 }
 
 
