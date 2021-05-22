@@ -104,17 +104,14 @@ Thread::synchronize ()
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #elif SYNCHRONIZE == SEMAPHORE
 	/*~~~~~~~~~~~~kevin code(PART+)~~~~~~~~~~~*/
-	// for(int i = 0; i < PROGRAM_NUM; i++)
-    //     for(int j = 0; j < THREAD_NUM; j++)
-	// 		// if(i != programID && j != ID)
-	// 			sem_wait (&syncSem[ID][i][j]);
-	
 	for (int i = 0; i < PROGRAM_NUM; i++)
 		for (int j = 0; j < THREAD_NUM; j++)
-			sem_post (&syncSem[i][j][programID][ID]);
+			if(i != programID || j != ID)
+				sem_post (&syncSem[i][j][programID][ID]);
 	for(int i = 0; i < PROGRAM_NUM; i++)
 		for (int j = 0; j < THREAD_NUM; j++)
-			sem_wait (&syncSem[programID][ID][i][j]);
+			if(i != programID || j != ID)
+				sem_wait (&syncSem[programID][ID][i][j]);
 	/*~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~*/
 #else
 	pthread_mutex_lock (ioMutex);
@@ -246,7 +243,9 @@ Thread::matrixMultiplication(void* args)
 
 	    } // for (int i...
 
+// std::cout << obj->ID << "test wait" << std::endl;
 		obj->synchronize(); //kevin
+// std::cout << obj->ID << "test pass" << std::endl;
 
         // Copy the multiResult back to matrix
         for (int i = obj->startCalculatePoint; i < obj->endCalculatePoint; i++)
