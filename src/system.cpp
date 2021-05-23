@@ -12,7 +12,7 @@ sem_t**** System::syncSem;                // include syncSem by kevin for part+
  */
 System::System ()
 {
-    /*~~~~~~~~~kevin code(PART+) create 4d Synchronize~~~~~~~~*/
+    /*~~~~~~~~~kevin code(PART+) create 4d Semaphores~~~~~~~~*/
     System::syncSem  = new sem_t*** [PROGRAM_NUM]; // each flag for task to wait
     for (int i = 0; i < PROGRAM_NUM; i++)
     {
